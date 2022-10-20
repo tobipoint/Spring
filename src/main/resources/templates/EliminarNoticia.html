@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="https://www.thymeleaf.org/">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h3> elija la noticia que va a eliminar </h3>
+        <div >
+            <form action="Noticia/darDeBaja" method="Post">
+                <select name="titulo">
+                    <option> Seleccionar titulo de tu noticia </option>
+                    <option th:each="noticias :${noticias}"
+                            th:value="${noticias.titulo}"
+                            th:text="${noticias.titulo}"/>
+                </select>
+                <button type="submit"> Eliminar Noticia </button>
+            </form>
+        </div> 
+    </body>
+</html>
