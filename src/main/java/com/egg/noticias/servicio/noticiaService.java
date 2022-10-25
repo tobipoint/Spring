@@ -13,14 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class noticiaService {
-
+    
     @Autowired
     private noticiaRepositorio noticiaRepositorio;
     
     @Autowired
     private imagenServicio imagenServicio;
     
-
     @Transactional
     public void crearNoticia(MultipartFile foto, String titulo, String cuerpo) throws excepciones {
         validar(titulo, cuerpo, foto);
@@ -31,26 +30,27 @@ public class noticiaService {
             System.out.println(imagen);
             noticia.setImagen(imagen);
             noticia.setTitulo(titulo);
-
+            
             noticiaRepositorio.save(noticia);
         } catch (excepciones e) {
             System.err.println("error ");
         }
     }
-
+    
     @Transactional
-    public void actualizarNoticia(String titulo, String cuerpo, MultipartFile foto) throws excepciones {
+    public void actualizarNoticia(String id, String titulo, String cuerpo, MultipartFile foto) throws excepciones {
         validar(titulo, cuerpo, foto);
-        Noticia noticia = new Noticia();
+        Noticia noticia = getOne(id);
         noticia.setCuerpo(cuerpo);
-        noticia.setImagen((Imagen) foto);
+        Imagen imagen = imagenServicio.guardar(foto);
+        noticia.setImagen(imagen);
         noticia.setTitulo(titulo);
-
+        
         noticiaRepositorio.save(noticia);
     }
-
+    
     private void validar(String titulo, String cuerpo, MultipartFile foto) throws excepciones {
-
+        
         if (titulo == null || titulo.isEmpty()) {
             throw new excepciones("titulo nulo");
         }
@@ -58,29 +58,44 @@ public class noticiaService {
             throw new excepciones("cuerpo nulo");
         }
         if (foto == null || foto.isEmpty()) {
-            throw new excepciones("foto nulo");
+            throw new excepciones("foto nula");
         }
-
     }
-
+    
+    private void validar2(String titulo, String cuerpo) throws excepciones {
+        
+        if (titulo == null || titulo.isEmpty()) {
+            throw new excepciones("titulo nulo");
+        }
+        if (cuerpo == null || cuerpo.isEmpty()) {
+            throw new excepciones("cuerpo nulo");
+        }
+    }
+    
     @Transactional
-    public void elimiarPorTitulo(String titulo) {
-        Noticia noticia = noticiaRepositorio.buscarPorTitulo(titulo);
-        noticiaRepositorio.delete(noticia);
+    public void elimiarPorTitulo(String id) {
+        Noticia noticia = noticiaRepositorio.getOne(id);
+        try {
+            noticiaRepositorio.deleteById(id);
+            System.out.println("Noticia eliminarda");
+        } catch (Exception e) {
+            System.err.println("La noticia no se pudo eliminar ");
+        }
     }
-
+    
     @Transactional
-    public Noticia getOne(String titulo) {
-        return noticiaRepositorio.getOne(titulo);
+    public Noticia getOne(String id) throws excepciones {
+        Noticia noticia = noticiaRepositorio.getOne(id);
+        return noticia;
     }
-
+    
     @Transactional
     public List<Noticia> listar() {
 //        List<Noticia> lista = noticiaRepositorio.listar();
         List<Noticia> lista = new ArrayList();
         lista = noticiaRepositorio.findAll();
-
+        
         return lista;
     }
-
+    
 }

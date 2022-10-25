@@ -5,8 +5,6 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns:th="https://www.thymeleaf.org/" >
-
-
     <head>
         <title> editar noticia </title>
         <meta charset="UTF-8">
@@ -15,16 +13,8 @@ and open the template in the editor.
               integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
               crossorigin="anonymous" />  
     </head>
-    <body>
-        <div >
-            <select name="titulo">
-                <option> Seleccionar titulo de tu noticia </option>
-                <option th:each="noticias : ${noticias}"
-                        th:value="${noticias.titulo}"
-                        th:text="${noticias.titulo}" />
-            </select>
-        </div> 
-        <form action="/Noticia/modificar" method="Post">
+    <body> 
+        <form th:action="@{/Noticia/modificar/__${noticias.id}__}" method="Post" enctype="multipart/form-data">
             <div> 
                 <h2> Ingrese el titulo de la noticia </h2>
                 <input type="text" name="titulo"  placeholder="titulo">
@@ -35,24 +25,36 @@ and open the template in the editor.
             </div>
             <div> 
                 <h2> Ingrese una imagen </h2>
-                <input type="text" name="foto"  placeholder="url de una imagen">
+                <input type="file" name="foto"  placeholder="imagen">
             </div> 
             <br>
-            <button type="submit"> Subir </button>                
+            <button type="submit">Subir</button>                
         </form>
 
-        <div th:if="${error != null}" >
+        <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
             <div class="card-body">
-                <h5 class="card-title"> Error </h5>
+                <h5 class="card-title">Exito ð</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+        <div th:if="${error}!=null" class="card text-white bg-danger mb-3 mensajeError" >
+            <div class="card-body">
+                <h5 class="card-title">Error ð</h5>
                 <p class="card-text" th:text="${error}"></p>
             </div>
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" 
         crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous" ></script> 
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
     </body>
 </html>

@@ -32,54 +32,64 @@ public class NoticiaControlador {
         try {
             noticiaServicio.crearNoticia(foto, titulo, cuerpo);
             modelo.put("exito", "la noticia se cargo con exito");
+            return "redirect:/";
         } catch (excepciones e) {
             modelo.put("error", "la noticia no se ha cargado");
             return "crearNoticia.html";
         }
-        return "index.html";
     }
 
-    @GetMapping("/Editar") //localhost8080/Noticia/editar
-    public String NoticiaEditar(ModelMap modelo) {
-        List<Noticia> noticias = noticiaServicio.listar();
+    @GetMapping("/Editar/{id}") //localhost8080/Noticia/editar
+    public String NoticiaEditar(@PathVariable String id, ModelMap modelo) throws excepciones {
+        Noticia noticias = noticiaServicio.getOne(id);
         modelo.addAttribute("noticias", noticias);
 
         return "editarNoticia";
     }
 
 //    @PostMapping("/modificar/{titulo}") 
-    @PostMapping("/modificar")
-    public String modificar(@RequestParam String titulo, @RequestParam String cuerpo,
+    @PostMapping("/modificar/{id}")
+    public String modificar(@PathVariable String id, @RequestParam String titulo, @RequestParam String cuerpo,
             @RequestParam MultipartFile foto, ModelMap modelo) throws excepciones {
-
         try {
-            noticiaServicio.actualizarNoticia(titulo, cuerpo, foto);
-            return "index.html";
+            Noticia noticias = noticiaServicio.getOne(id);
+            modelo.addAttribute("noticias", noticias);
+            noticiaServicio.actualizarNoticia(id, titulo, cuerpo, foto);
+            return "verNoticia.html";
         } catch (excepciones e) {
             List<Noticia> noticias = noticiaServicio.listar();
             modelo.addAttribute("noticias", noticias);
-            return "/editarNoticia";
+            return "/listarNoticias";
         }
     }
 
-    @GetMapping("/Eliminar") //localhost8080/Noticia/eliminar
-    public String NoticiaEliminar(ModelMap modelo) {
-        List<Noticia> noticias = noticiaServicio.listar();
-        modelo.addAttribute("noticias", noticias);
+    @GetMapping("/Eliminar/{id}") //localhost8080/Noticia/eliminar
+    public String NoticiaEliminar(ModelMap modelo, @PathVariable String id) throws excepciones {
+        modelo.put("noticias", noticiaServicio.getOne(id));
 
         return "EliminarNoticia";
     }
 
-    @PostMapping("/darDeBaja")
-    public String Eliminar(@PathVariable String titulo, ModelMap modelo) {
+    @PostMapping("/darDeBaja/{id}")
+    public String Eliminar(@PathVariable String id, ModelMap modelo) throws excepciones {
+        System.out.println("eliminando...");
+        noticiaServicio.getOne(id);
         try {
-            noticiaServicio.elimiarPorTitulo(titulo);
-            modelo.put("exito", "el libro se elimino correctamente");
-            return "index.html";
+            noticiaServicio.elimiarPorTitulo(id);
+            modelo.put("exito", "la noticia se elimino correctamente");
+            return "redirect:/";
         } catch (Exception e) {
             modelo.put("error", "el libro no se ha eliminado");
-            return "/Eliminar";
+            return "/EliminarNoticia";
         }
+    }
+
+    @GetMapping("/verNoticia/{id}") //localhost8080/Noticia/verNoticia
+    public String verNoticias(@PathVariable String id, ModelMap modelo) throws excepciones {
+        Noticia noticias = noticiaServicio.getOne(id);
+        modelo.addAttribute("noticias", noticias);
+
+        return "verNoticia";
     }
 
     @GetMapping("/listar") //localhost8080/Noticia/listar

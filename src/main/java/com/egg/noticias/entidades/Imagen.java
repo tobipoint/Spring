@@ -6,13 +6,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Imagen {
 
+//    @Id
+//    @GeneratedValue(generator = "uuid")
     @Id
-    @GeneratedValue(generator = "uuid")
-    private int id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
     private String mime;
     private String nombre;
 
@@ -23,11 +27,11 @@ public class Imagen {
     public Imagen() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,23 +1,30 @@
-
 package com.egg.noticias.entidades;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Noticia {
-   
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    
+//    @Id
+//    @GeneratedValue(generator = "uuid")
     @Id
-    @GeneratedValue(generator = "uuid")
-    private int id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
     private String titulo;
     private String cuerpo;
- 
+
     @OneToOne
     private Imagen imagen;
 
+//     @NotFound(
+//             action = NotFoundAction.IGNORE)
     public Noticia() {
     }
 
@@ -26,20 +33,19 @@ public class Noticia {
         this.cuerpo = cuerpo;
         this.imagen = imagen;
     }
-    
 
-    public Noticia(int id, String titulo, String cuerpo, Imagen imagen) {
+    public Noticia(String id, String titulo, String cuerpo, Imagen imagen) {
         this.id = id;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.imagen = imagen;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -66,7 +72,5 @@ public class Noticia {
     public void setImagen(Imagen imagen) {
         this.imagen = imagen;
     }
-    
-   
-    
+
 }
