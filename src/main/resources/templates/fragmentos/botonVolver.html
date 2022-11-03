@@ -1,0 +1,4 @@
+<div> 
+    <button sec:authorize="hasRole('ADMIN')" th:href='/admin/dashboard'> Volver al inicio </button>
+    <button th:if="${session.usuariosession.rol == 'USER' || ${session.usuariosession.rol == 'PERIODISTA'}" th:href='/inicio' > Volver al inicio </button>
+</div>

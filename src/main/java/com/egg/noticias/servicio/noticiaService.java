@@ -84,7 +84,7 @@ public class noticiaService {
     }
     
     @Transactional
-    public Noticia getOne(String id) throws excepciones {
+    public Noticia getOne(String id)  {
         Noticia noticia = noticiaRepositorio.getOne(id);
         return noticia;
     }

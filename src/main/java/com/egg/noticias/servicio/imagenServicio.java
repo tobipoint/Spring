@@ -19,19 +19,20 @@ public class imagenServicio {
 
     @Transactional
     public Imagen guardar(MultipartFile archivo) throws excepciones {
-        Imagen imagen = new Imagen();
+
         if (archivo != null) {
             try {
+                Imagen imagen = new Imagen();
                 imagen.setMime(archivo.getContentType());
                 imagen.setNombre(archivo.getName());
                 imagen.setContenido(archivo.getBytes());
 
                 return imagenRepositorio.save(imagen);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
-        return imagen;
+        return null;
     }
 
     @Transactional

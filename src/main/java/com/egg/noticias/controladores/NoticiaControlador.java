@@ -32,7 +32,7 @@ public class NoticiaControlador {
         try {
             noticiaServicio.crearNoticia(foto, titulo, cuerpo);
             modelo.put("exito", "la noticia se cargo con exito");
-            return "redirect:/";
+            return "redirect:/inicio";
         } catch (excepciones e) {
             modelo.put("error", "la noticia no se ha cargado");
             return "crearNoticia.html";
@@ -77,7 +77,7 @@ public class NoticiaControlador {
         try {
             noticiaServicio.elimiarPorTitulo(id);
             modelo.put("exito", "la noticia se elimino correctamente");
-            return "redirect:/";
+            return "redirect:/inicio";
         } catch (Exception e) {
             modelo.put("error", "el libro no se ha eliminado");
             return "/EliminarNoticia";
